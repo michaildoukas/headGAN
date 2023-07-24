@@ -1,0 +1,8 @@
+.*
+!/.gitignore
+**/__pycache__/
+checkpoints/
+datasets/
+files/
+results/
+temp_audio.wav

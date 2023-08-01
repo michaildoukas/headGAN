@@ -19,10 +19,18 @@ def unzip_file(file_name, unzip_path):
 def main():
     # Download urls
     download_urls = ['https://www.dropbox.com/scl/fi/u5sopigekavoqvtloz44j/files.zip?rlkey=qtog3kpbauxg7foxbjmj9jeid&dl=1',
-                     'https://www.dropbox.com/scl/fi/kyiilyxnwxswzq6gpuv69/checkpoints.zip?rlkey=pqtj5xk0dkfktlbwdk1ealqou&dl=1']
-    dir = '.'
+                     'https://www.dropbox.com/scl/fi/kyiilyxnwxswzq6gpuv69/checkpoints.zip?rlkey=pqtj5xk0dkfktlbwdk1ealqou&dl=1',
+                     'https://www.dropbox.com/scl/fi/g4o2t3tvr3smkw75o1njt/retinaface_r50_v1.zip?rlkey=n9nwaf6sgg3jqq8ho37n8ec1b&dl=1']
+                     
     for i, path in enumerate(download_urls):
-        fpath = os.path.join(dir, path.split('/')[-1].split('?')[0])
+        fname = path.split('/')[-1].split('?')[0]
+        if fname == 'retinaface_r50_v1.zip':
+            dir = os.path.join(os.path.expanduser('~'), '.insightface/models/')
+            if not os.path.exists(dir):
+                os.makedirs(dir)
+        else:
+            dir = './'
+        fpath = os.path.join(dir, fname)
         if not os.path.exists(fpath):
             bar = MyProgressBar('Downloading file %d/%d' % (i+1,
                                 len(download_urls)))

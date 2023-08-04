@@ -10,6 +10,8 @@ class ReenactOptions(BaseOptions):
                             help='The path to driving .mp4 video')
         parser.add_argument('--no_crop', action='store_true', 
                             help='If set, do not perform face detection and cropping')
+        parser.add_argument('--show_warped', action='store_true', 
+                            help='If set, add the warped image to the results')
         # Face detection options
         parser.add_argument('--gpu_id', type=int, default=0, 
                             help='The gpu id for face detector and face reconstruction modules')

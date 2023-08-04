@@ -121,16 +121,24 @@ with torch.no_grad():
         input = input_A.view(opt.batch_size, -1, height, width)
         ref_input = torch.cat([ref_input_A, ref_input_B], dim=1)
 
-        generated, _, _ = modelG(input, ref_input, audio_feats)
+        generated, warped, _ = modelG(input, ref_input, audio_feats)
 
         generated = tensor2im(generated[0])
+        result_list = [reference_image[0], driving_frames[i + opt.n_frames_G - 1], generated]
 
         mkdirs([os.path.join(save_dir, 'driving'), 
                 os.path.join(save_dir, 'generated')])
 
         save_image(driving_frames[i + opt.n_frames_G - 1], os.path.join(save_dir, 'driving', str(i).zfill(6) + '.png'))
         save_image(generated, os.path.join(save_dir, 'generated', str(i).zfill(6) + '.png'))
-        result_frame = np.concatenate([reference_image[0], driving_frames[i + opt.n_frames_G - 1], generated], axis=1)
+
+        if opt.show_warped:
+            warped = tensor2im(warped[0])
+            result_list += [warped]
+            mkdir(os.path.join(save_dir, 'warped'))
+            save_image(warped, os.path.join(save_dir, 'warped', str(i).zfill(6) + '.png'))
+
+        result_frame = np.concatenate(result_list, axis=1)
         result_frames.append(result_frame)
 
 video_save_path = os.path.join(save_dir, 'video.mp4')
